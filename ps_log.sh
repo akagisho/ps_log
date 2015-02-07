@@ -5,7 +5,7 @@ unalias -a
 
 DATE=`date +"%Y%m%d"`
 TIME=`date +"%Y%m%d_%H%M"`
-DIR=$DATE
+LOG_DIR=$DATE
 PID_FILE=ps_log.pid
 LOG_GENERATION=${LOG_GENERATION:-14}
 
@@ -24,7 +24,7 @@ function CHECK_DUPLICATION {
 }
 
 function EXEC {
-  local FILE=$DIR/$TIME.log
+  local FILE=$LOG_DIR/$TIME.log
   echo "===== begin $@ =====" >> $FILE
   nice "$@" >> $FILE 2>&1
   echo "===== end $@ =====" >> $FILE
@@ -40,7 +40,7 @@ function LOG_ROTATE {
   fi
 }
 
-mkdir -p $DIR
+mkdir -p $LOG_DIR
 
 CHECK_DUPLICATION
 
@@ -52,5 +52,10 @@ EXEC iostat
 EXEC top -b -n 1
 EXEC free
 EXEC w
+
+DIR=$(cd $(dirname $0); pwd)
+if [ -f $DIR/ps_log.local.sh ]; then
+  . $DIR/ps_log.local.sh
+fi
 
 LOG_ROTATE
