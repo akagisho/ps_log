@@ -24,11 +24,10 @@ function CHECK_DUPLICATION {
 }
 
 function EXEC {
-  local COMMAND=$@
   local FILE=$DIR/$TIME.log
-  echo "===== begin "$COMMAND" =====" >> $FILE
-  nice $COMMAND >> $FILE 2>&1
-  echo "===== end "$COMMAND" =====" >> $FILE
+  echo "===== begin $@ =====" >> $FILE
+  nice "$@" >> $FILE 2>&1
+  echo "===== end $@ =====" >> $FILE
 }
 
 function LOG_ROTATE {
