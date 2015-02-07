@@ -25,8 +25,10 @@ function CHECK_DUPLICATION {
 
 function EXEC {
   local COMMAND=$@
-  local FILE=$DIR/${1}_$TIME.log
-  nice $COMMAND > $FILE 2>&1
+  local FILE=$DIR/$TIME.log
+  echo "===== begin "$COMMAND" =====" >> $FILE
+  nice $COMMAND >> $FILE 2>&1
+  echo "===== end "$COMMAND" =====" >> $FILE
 }
 
 function LOG_ROTATE {
